@@ -9,7 +9,7 @@ def letters(s):
     # Creates a tuple(index,character)
     for j,c in enumerate(s):
         # if there's an alphabetical character
-        # and its index isn't more than 0 or the previous character is not alpha
+        # and its index isn't more than 0 or the previous character isn't alpha
         # write it as a beginning of a substring
         if c.isalpha():
             if not((j > 0) and (s[j-1].isalpha())):
