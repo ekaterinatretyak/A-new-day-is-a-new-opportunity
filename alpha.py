@@ -1,12 +1,12 @@
-"""This is a pretty good example of attaining an array of alphabetical substrings from a customized string"""
+"""This is a pretty good example of attaining an array of alphabetical substrings from an arbitrary string"""
 
 s = input()
 
 def letters(s):
-    """Takes a string as input and divides it into alphabetical symbols"""
+    """Takes a string as input and divides it into alphabetical substrings"""
     i = 0
-    l = []  # Define an array
-    # Creates a tuple(index,character)
+    l = []  # An array for our future list of substrings
+    # Check each object(index,character) whether it is alpha or not
     for j,c in enumerate(s):
         # If there's an alphabetical character
         # And its index isn't more than 0 or the previous character isn't alpha
@@ -23,11 +23,12 @@ def letters(s):
                     l.append(s[i:j])
             if not (s[j-1].isalpha()):
                     i = j + 1
-    # While i is less than a string's length
-    # Add to the array a slice from i to the string's end
-    if i < len(s):
+    # To keep the last alphabetical substring in the array we need the following part, 
+    # because after reaching the last alphabetical character we move on to the next one which is a blank, not an non-alphabetical one
+    
+   if i < len(s):
         l.append(s[i:])
-    return l
+   return l
 
 y = letters(s)
 print(y)
