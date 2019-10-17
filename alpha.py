@@ -1,4 +1,4 @@
-"""This is a pretty good example of attaining an array of alphabetical substrings"""
+"""This is a pretty good example of attaining an array of alphabetical substrings from a customized string"""
 
 s = input()
 
