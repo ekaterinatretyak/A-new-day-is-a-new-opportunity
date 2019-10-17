@@ -1,4 +1,5 @@
-"""This is a pretty good example of attaining an array of alphabetical substrings from an arbitrary string"""
+"""This is a pretty good example of attaining an array
+of alphabetical substrings from an arbitrary string"""
 
 s = input()
 
@@ -23,8 +24,9 @@ def letters(s):
                     l.append(s[i:j])
             if not (s[j-1].isalpha()):
                     i = j + 1
-    # To keep the last alphabetical substring in the array we need the following part, 
-    # because after reaching the last alphabetical character we move on to the next one which is a blank, not an non-alphabetical one
+   # The part below adds the last alphabetical substring in the array
+   # As no character stands after the last alphabetical character
+   # Though we need an non-alphabetical one to add any substring in the array
     
    if i < len(s):
         l.append(s[i:])
