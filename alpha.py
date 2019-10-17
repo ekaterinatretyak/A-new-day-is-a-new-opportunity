@@ -5,7 +5,7 @@ s = input()
 def letters(s):
     """Takes a string as input and divides it into alphabetical symbols"""
     i = 0
-    l = []
+    l = []  # Define an array
     # Creates a tuple(index,character)
     for j,c in enumerate(s):
         # if there's an alphabetical character
