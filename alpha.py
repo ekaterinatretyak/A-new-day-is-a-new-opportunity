@@ -24,7 +24,7 @@ def letters(s):
             if not (s[j-1].isalpha()):
                     i = j + 1
     # While i is less than a string's length
-    # Add to the array a slice from i to j
+    # Add to the array a slice from i to the end of string
     if i < len(s):
         l.append(s[i:])
     return l
