@@ -56,7 +56,6 @@ class TestStringMethods(unittest.TestCase):
         s = ''
         self.assertEqual(myTokenizer.tokenize(s), [])
 
-
 if __name__ == '__main__':
         unittest.main()
                          
