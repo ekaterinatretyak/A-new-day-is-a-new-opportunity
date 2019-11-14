@@ -54,7 +54,7 @@ class TestStringMethods(unittest.TestCase):
         
     def test_tokenize(self):
         s = ''
-        self.assertEqual(alpha.letters(s), [])
+        self.assertEqual(myTokenizer.tokenize(s), [])
 
 
 if __name__ == '__main__':
