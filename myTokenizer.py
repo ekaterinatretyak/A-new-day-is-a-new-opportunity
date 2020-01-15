@@ -92,7 +92,7 @@ class MyTokenizer(object):
         """This method returns token, its category and
         index of the 1st and the last char os substring in the user's string"""
         
-       
+        i = 0
         words = []
         if len(s) == 0:
             words = []
