@@ -46,7 +46,7 @@ class MyTokenizer(object):
             l = []
         # We go through each char in the string
         # and check each object(index,character) whether it is alpha or not
-        for j,c in enumerate(s):
+        for j, c in enumerate(s):
             # If there's an alphabetical character
             # it can be the first char in string
             # or the previous character isn't alpha
@@ -76,25 +76,18 @@ class MyTokenizer(object):
     def get_tokens_by_categories(char):
         """This method determines categories of chars in the string
         and adds chars to the arrays"""
-        
-        cat = {'SPACE': [],
-                'ALPHA': [],
-                'DIGIT': [],
-                'PUNCTUATION': [],
-                'UNKNOWN': []}
-        
         if c.isspace():   
-            cat['SPACE'].append(c)
+           category = 'SPACE'
         if c.isalpha():
-            cat['ALPHA'].append(c)
+           category = 'ALPHA'
         if c.isdigit():
-            cat['DIGIT'].append(c)
+           category = 'DIGIT'
         if unicodedata.category(c)[0] == 'P':
-            cat['PUNCTUATION'].append(c)
+           category = 'PUNCT'
         else:
-            cat['UNKNOWN'].append(c)
-        return cat
-            
+           category = 'UNKNOWN'
+        return category
+              
     def tokenize_categories(self, s):
         """This method returns token, its category and
         index of the 1st and the last char os substring in the user's string"""
@@ -105,30 +98,30 @@ class MyTokenizer(object):
         # We go through each char in the string
         # and check each object(index,character) whether it is alpha or not
         for j,c in enumerate(s):
-            
-        cat = self.get_tokens_by_categories(s[0])
-        for j, c in enumerate(s):
-            category = MyTokenizer.get_tokens_by_categories(c)
+            category = self.get_tokens_by_categories(c)
+        
             if i == 0:
                 index = i
                 prevcat = category
             # Check whether it is not the last char in the string
             if (i+1 <= len(s)-1):
                 # We compare categories of current and the previous characters
-                # if they differ, it is the the last char of the token
+                # if they differ, it is the the last char of the category
+                # and we add the substring
                 if category != prevcat:
                     token = s[index:i]
                     k = Token(token, prevcat, index, i)
                     words.append(k)
                     index = i
                     prevcat = category
+                    
          # The part below finds the last char in the string
          # and checks it
             token = s[index:]
             i = i + 1  
             k = Token(token, category, index, i) 
             words.append(k)         
-        return data2
+        return words
          
         
 class Token(object):
@@ -137,9 +130,9 @@ class Token(object):
     token: the token itself.
     firstind: the position of the first character.
     lastind: the position of the last character.
-    cat: the category of the token"""
+    category: the category of the token"""
     
-   def __init__(self, token, cat, firstind, lastind):      
+   def __init__(self, token, category, firstind, lastind):      
          self.firstindex = firstind
          self.lastindex = lastind
          self.token = token
