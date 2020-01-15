@@ -73,7 +73,7 @@ class MyTokenizer(object):
         return l
     
     @staticmethod
-    def get_tokens_by_categories(char):
+    def def_categories(char):
         """This method determines categories of chars in the string
         and adds chars to the arrays"""
         if c.isspace():   
@@ -92,6 +92,7 @@ class MyTokenizer(object):
         """This method returns token, its category and
         index of the 1st and the last char os substring in the user's string"""
         
+       
         words = []
         if len(s) == 0:
             words = []
