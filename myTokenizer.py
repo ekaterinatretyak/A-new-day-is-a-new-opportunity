@@ -97,7 +97,7 @@ class MyTokenizer(object):
             words = []
         # We go through each char in the string
         # and check each object(index,character) whether it is alpha or not
-        for j,c in enumerate(s):
+        for i,c in enumerate(s):
             category = self.get_tokens_by_categories(c)
         
             if i == 0:
