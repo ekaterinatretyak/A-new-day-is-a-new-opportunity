@@ -45,33 +45,29 @@ class MyTokenizer(object):
         substrings from the space to space"""
         i = 0
         l = [] # An array for our future list of substrings
-        # Check each object(index,character) whether it is alpha or not
         if len(s) == 0:
             l = []
+        # Check each object(index,character) whether it is alpha or not
         for j,c in enumerate(s):
             # If there's an alphabetical character
-            # And its index isn't more than 0
-            #or the previous character isn't alpha
+            # it can be the first char in string
+            # or the previous character isn't alpha
             # Write it as a beginning of a substring
             if c.isalpha():
                 if not(((j > 0) or (s[j-1].isalpha()))):
                     i = j
+            # Otherwise, we move on
             else:
                 i = j + 1
                 
-            # If there is a non-alphabetical character
-            # And its index is more than 0 and the previous one is alpha
-            # It means that there is the end of the substring
-            # If the previous character is also non-alpha, we move on
-            
+            # Check whether it is not the last char in the string
             if (j+1 <= len(s)-1):
+                # Find the end of alpha substring and add it to list
                 if c.isalpha() and not s[j+1].isalpha():
                     l.append(s[i:j+1])
             
-        # The part below adds the last alphabetical substring in the array
-        # As no character stands after the last alphabetical character
-        # Though we need an non-alphabetical one
-        #to add any substring in the array
+        # The part below finds the last char in the string
+        # and adds it to the array if it is alpha
 
         if c.isalpha():
             l.append(s[i:])
@@ -80,32 +76,28 @@ class MyTokenizer(object):
 def tokenize(s):
     i = 0
     l = [] # An array for our future list of substrings
-    # Check each object(index,character) whether it is alpha or not
     if len(s) == 0:
         l = []
+    # Check each object(index,character) whether it is alpha or not
     for j,c in enumerate(s):
         # If there's an alphabetical character
-        # And its index isn't more than 0
-        #or the previous character isn't alpha
+        # it can be the first char in string
+        # or the previous character isn't alpha
         # Write it as a beginning of a substring
         if c.isalpha():
             if not(((j > 0) or (s[j-1].isalpha()))):
                 i = j
+        # Otherwise, we move on
         else:
             i = j + 1
-            # If there is a non-alphabetical character
-            # And its index is more than 0 and the previous one is alpha
-            # It means that there is the end of the substring
-            # If the previous character is also non-alpha, we move on
+        # Check whether it is not the last char in the string
         if (j+1 <= len(s)-1):
+            # Find the end of alpha substring and add it to list
             if c.isalpha() and not s[j+1].isalpha():
                 l.append(s[i:j+1])
             
-        # The part below adds the last alphabetical substring in the array
-        # As no character stands after the last alphabetical character
-        # Though we need an non-alphabetical one
-        #to add any substring in the array
-
+    # The part below finds the last char in the string
+    # and adds it to the array if it is alpha
     if c.isalpha():
         l.append(s[i:])
             
