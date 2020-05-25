@@ -1,106 +1,167 @@
 import unittest
 import myTokenizer
-from myTokenizer import myTokenizer
-from myTokenizer import Token
+from generator import MyTokenizer
+from generator import Token
 
-class TestMyTokenizerCategories(unittest.TestCase):  # Check class MyTokenizer, method tokenize_categories
-    
+class TestGenAlphaAndDigit(unittest.TestCase):
     def setUp(self):
-      self.t = myTokenizer.MyTokenizer()
-    
-    def test_tokenize(self):
-        s = self.t.tokenize_categories('Я не играю')
-        self.assertEqual(s[0], Token("я", "alpha", 0, 1))
-        self.assertEqual(len(s), 5)
-    
-    def test_punctuation(self):
-        s = self.t.tokenize_categories('Я! не, играю')
-        self.assertEqual(len(s), 7)
-        self.assertEqual(s[1], Token('!', 'punct', 1, 2))
-        self.assertEqual(s[5], Token(',', 'punct', 5, 6))
-                
-    def test_digitals_string(self):
-        s = self.t.tokenize_categories('Я98 не 14 играю')
-        self.assertEqual(len(s), 8)
-        self.assertEqual(s[1], Token('98', 'digit', 1, 3))
-        self.assertEqual(s[6], Token('14', 'digit', 7, 9))
-        
-    def test_symbols(self):
-        s = self.t.tokenize_categories('Я !9 не) 43играю')
-        self.assertEqual(len(s), 10)
-        self.assertEqual(s[2], Token('!', 'punct', 2, 3))
-        self.assertEqual(s[3], Token('9', 'digit', 3, 4))
-        self.assertEqual(s[6], Token(')', 'punct', 7, 8))
-        self.assertEqual(s[8], Token('43', 'digit', 9, 11))
-        
-    def test_digitals(self):
-        s = self.t.tokenize_categories('Я не играю90')
-        self.assertEqual(len(s), 5)
-        self.assertEqual(s[5], Token('90', 'digit', 10, 12))
-       
-    def test_empty_string(self):
-        s = self.t.tokenize_categories('')
-        self.assertEqual(len(s), 0)
-        self.assertEqual(s, [])   
+        self.k = MyTokenizer()
 
+    def test_alpha(self):
+        s = list(self.k.gen_alpha_digit_tokens('я не играю'))
+        self.assertEqual(s[0], Token ("я", "ALPHA", 0, 1))
+        self.assertEqual(len(s), 3)
+
+    def test_without_space(self):
+        s = list(self.k.gen_alpha_digit_tokens('ябудуиграть'))
+        self.assertEqual(s, [Token('ябудуиграть', 'ALPHA', 0, 11)])
+        self.assertEqual(len(s), 1)
+
+    def test_digitals_string(self):
+        s = list(self.k.gen_alpha_digit_tokens('981456'))
+        self.assertEqual(len(s), 1)
+        self.assertEqual(s, [Token('981456', 'DIGIT', 0, 6)])
+
+    def test_punctuation(self):
+        s = list(self.k.gen_alpha_digit_tokens('Я буду!! играть'))
+        self.assertEqual(len(s), 3)
+        self.assertEqual(s[0], Token('Я', 'ALPHA', 0, 1))
+
+    def test_empty_string(self):
+        s = list(self.k.gen_alpha_digit_tokens(''))
+        self.assertEqual(len(s), 0)
+        self.assertEqual(s, [])
+
+    def test_last_symbol(self):
+        s = list(self.k.gen_alpha_digit_tokens('я не буду с тобой играть 00'))
+        self.assertEqual(len(s), 7)
+        self.assertEqual(s[6], Token('00','DIGIT', 25, 27))
+
+
+class TestGenerator(unittest.TestCase):  # Check generator of categories
+    def setUp(self):
+        self.k = MyTokenizer()
+
+    def test_alpha(self):
+        s = list(self.k.gen_tokenize_cat('я не играю'))
+        self.assertEqual(s[0], Token ("я", "ALPHA", 0, 1))
+        self.assertEqual(len(s), 5)
+
+    def test_without_space(self):
+        s = list(self.k.gen_tokenize_cat('ябудуиграть'))
+        self.assertEqual(s, [Token('ябудуиграть', 'ALPHA', 0, 11)])
+        self.assertEqual(len(s), 1)
+
+    def test_digitals_string(self):
+        s = list(self.k.gen_tokenize_cat('981456'))
+        self.assertEqual(len(s), 1)
+        self.assertEqual(s, [Token('981456', 'DIGIT', 0, 6)])
+
+    def test_punctuation(self):
+        s = list(self.k.gen_tokenize_cat('Я буду!! играть'))
+        self.assertEqual(len(s), 6)
+        self.assertEqual(s[3], Token('!!', 'PUNCT', 6, 8))
+
+    def test_empty_string(self):
+        s = list(self.k.gen_tokenize_cat(''))
+        self.assertEqual(len(s), 0)
+        self.assertEqual(s, [])
+
+    def test_last_symbol(self):
+        s = list(self.k.gen_tokenize_cat('я не буду с тобой играть 00'))
+        self.assertEqual(len(s), 13)
+        self.assertEqual(s[12], Token('00','DIGIT', 25, 27))
+
+class TestCategories(unittest.TestCase):  # Check class MyTokenizer, method tokenize_cat
+
+    def setUp(self):
+        self.k = MyTokenizer()
+
+    def test_alpha(self):
+        s = self.k.tokenize_cat('я не играю')
+        self.assertEqual(s[0], Token ("я", "ALPHA", 0, 1))
+        self.assertEqual(len(s), 5)
+
+    def test_without_space(self):
+        s = self.k.tokenize_cat('ябудуиграть')
+        self.assertEqual(s, [Token('ябудуиграть', 'ALPHA', 0, 11)])
+        self.assertEqual(len(s), 1)
+
+    def test_digitals_string(self):
+        s = self.k.tokenize_cat('981456')
+        self.assertEqual(len(s), 1)
+        self.assertEqual(s, [Token('981456', 'DIGIT', 0, 6)])
+
+    def test_punctuation(self):
+        s = self.k.tokenize_cat('Я буду!! играть')
+        self.assertEqual(len(s), 6)
+        self.assertEqual(s[3], Token('!!', 'PUNCT', 6, 8))
+
+    def test_empty_string(self):
+        s = self.k.tokenize_cat('')
+        self.assertEqual(len(s), 0)
+        self.assertEqual(s, [])
+
+    def test_last_symbol(self):
+        s = self.k.tokenize_cat('я не буду с тобой играть 00')
+        self.assertEqual(len(s), 13)
+        self.assertEqual(s[12], Token('00','DIGIT', 25, 27))
 
 class TestMyTokenizer(unittest.TestCase): #Check class MyTokenizer, method tokenize
-    
-    def setUp(self):
-        self.t = myTokenizer.MyTokenizer()
 
-    def test_tokenize(self):
+    def setUp(self):
+        self.k = MyTokenizer()
+
+    def test_alpha(self):
         s = 'Я не играю'
-        self.assertEqual(self.t.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(self.k.tokenize(s), ['Я', 'не', 'играю'])
 
     def test_punctuation(self):
         s = 'Я! не, играю'
-        self.assertEqual(self.t.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(self.k.tokenize(s), ['Я', 'не', 'играю'])
 
     def test_digitals_string(self):
         s = 'Я98 не 14 играю'
-        self.assertEqual(self.t.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(self.k.tokenize(s), ['Я', 'не', 'играю'])
 
     def test_symbols(self):
         s = 'Я !9 не 43играю'
-        self.assertEqual(self.t.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(self.k.tokenize(s), ['Я', 'не', 'играю'])
 
     def test_digitals(self):
         s = 'Я не играю90'
-        self.assertEqual(self.t.tokenize(s), ['Я', 'не', 'играю'])
-       
+        self.assertEqual(self.k.tokenize(s), ['Я', 'не', 'играю'])
+
     def test_empty_string(self):
         s = ''
-        self.assertEqual(self.t.tokenize(s), [])
-      
-class TestStringMethods(unittest.TestCase): #Check function tokenize
-    
-    def test_tokenize(self):
+        self.assertEqual(self.k.tokenize(s), [])
+
+
+class TestMyFunction(unittest.TestCase): #Check function strspl
+
+    def test_alpha(self):
         s = 'Я не играю'
-        self.assertEqual(myTokenizer.tokenize(s), ['Я', 'не', 'играю'])
-     
+        self.assertEqual(myTokenizer.strspl(s), ['Я', 'не', 'играю'])
+
     def test_punctuation(self):
         s = 'Я! не, 0играю'
-        self.assertEqual(myTokenizer.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(myTokenizer.strspl(s), ['Я', 'не', 'играю'])
 
     def test_digitals_string(self):
         s = 'Я98 не 14 играю'
-        self.assertEqual(myTokenizer.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(myTokenizer.strspl(s), ['Я', 'не', 'играю'])
 
     def test_symbols(self):
         s = 'Я !9 не) 43играю'
-        self.assertEqual(myTokenizer.tokenize(s), ['Я', 'не', 'играю'])
+        self.assertEqual(myTokenizer.strspl(s), ['Я', 'не', 'играю'])
 
     def test_digitals(self):
         s = 'Я не играю90'
-        self.assertEqual(myTokenizer.tokenize(s), ['Я', 'не', 'играю'])
-        
+        self.assertEqual(myTokenizer.strspl(s), ['Я', 'не', 'играю'])
+
     def test_empty_string(self):
         s = ''
-        self.assertEqual(myTokenizer.tokenize(s), [])
-
+        self.assertEqual(myTokenizer.strspl(s), [])
 
 if __name__ == '__main__':
-        unittest.main()
-                         
-
+    unittest.main()
